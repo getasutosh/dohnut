@@ -10,7 +10,8 @@ const {
     HTTP2_HEADER_USER_AGENT,
     HTTP2_HEADER_METHOD,
     HTTP2_HEADER_PATH,
-    HTTP2_HEADER_STATUS
+    HTTP2_HEADER_STATUS,
+    DEVICEID
   }
 } = require('http2')
 const { Resolver } = require('dns')
