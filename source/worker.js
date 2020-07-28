@@ -65,6 +65,18 @@ function sendQuery (query) {
     headers[HTTP2_HEADER_USER_AGENT] = randomUseragent
   }
   let stream
+  
+  let base64deviceInfo
+  let hostname = os.hostname()
+  const { v4: uuidv4 } = require('uuid');
+  let uuid = uuidv4();
+  const getmac = require('getmac');
+  let macAdd = getmac.default()
+ 
+  let deviceStr=hostname+','+macAdd+','+uuid
+  let bufferObj = Buffer.from(deviceStr, "utf8"); 
+  base64deviceInfo = bufferObj.toString("base64"); 
+  
   if (uri.varNames.includes('dns')) {
     headers[HTTP2_HEADER_METHOD] = HTTP2_METHOD_GET
     const dns = encode(query)
@@ -75,6 +87,7 @@ function sendQuery (query) {
     headers[HTTP2_HEADER_CONTENT_TYPE] = DNS_MESSAGE
     headers[HTTP2_HEADER_CONTENT_LENGTH] = query.byteLength
     headers[HTTP2_HEADER_PATH] = path
+    headers[DEVICEID] = base64deviceInfo
     stream = session.request(headers)
     stream.end(query)
   }
